@@ -1,0 +1,46 @@
+.container
+  %h2= @book.title
+  .col-md-3
+    = image_tag @book.image_url, width: "300px"
+  .col-md-8.col-md-offset-1
+    %h3
+      %strong Author:
+      = @book.author
+    %p
+      %strong Description:
+      = @book.description
+    %p
+      %strong ISBN:
+      = @book.isbn
+
+    %section{"ng-controller" => "TabController as tab"}
+      %ul.nav.nav-pills
+        %li{"ng-class" => "{ active:tab.isSet(1) }" }
+          %a.btn{ "ng-click" => "tab.setTab(1)" }
+            Write a Review
+        %li{"ng-class" => "{ active:tab.isSet(2) }"}
+          %a.btn{ "ng-click" => "tab.setTab(2)" }
+            Recommend to a friend
+
+
+      %div{"ng-show" => "tab.isSet(1)"}
+        %section{"ng-controller" => "ReviewController as reviewCtrl" }
+          %blockquote{"ng-repeat" => "review in reviewCtrl.reviews"}
+            %strong {{ review.rating }} Stars
+            {{ review.text }}
+          %form{:name => "reviewForm", "ng-submit" => "reviewCtrl.addReview(book)" }
+            %fieldset.form-group
+              %select.form-control{ "ng-model" => "reviewCtrl.review.rating", "ng-options" => "rating for rating in [5,4,3,2,1]"}
+                %option{value: ""} --- Give a Rating ---
+            %fieldset.form-group
+              %textarea.form-control{ "ng-model" => "reviewCtrl.review.text", "placeholder" => "Write a short review of the book..."}
+            %fieldset.form-group
+              %input.btn.btn-success.pull-right{type: "submit", value: "Submit review"}
+      %div{"ng-show" => "tab.isSet(2)"}
+        %reviewForm
+
+
+
+%br
+.container
+  = link_to "Back", :back, class:  "btn btn-default"

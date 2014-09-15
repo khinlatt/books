@@ -1,0 +1,27 @@
+%div{ "ng-controller" => "indexCtrl as _" }
+  %label{ "for" => "bookFilter" } Filter by Book
+  %input{ "name" => "bookFilter", "type" => "text", "ng-model" => "_.show.bookFilter" }
+  %div{:style => "float: right"}
+    %label{ "for" => "authorFilter" } Filter by Author
+    %input{ "name" => "authorFilter", "type" => "text", "ng-model" => "_.show.authorFilter" }
+
+  %table.table
+    %thead
+      %tr.info
+        %th Image
+        %th Title
+        %th Author
+        %th ISBN
+        %th
+    %tbody
+      %tr{ "ng-repeat" => "book in _.books | filter: {title: _.show.bookFilter} | filter: {author: _.show.authorFilter}" }
+        %td
+          %img{:src => "{{ book.image_url }}", :width => "150px"}
+        %td
+          {{ book.title }}
+        %td
+          {{ book.author }}
+        %td
+          {{ book.isbn }}
+        %td
+          %a{:href => "/books/{{ book.id }}"} Details

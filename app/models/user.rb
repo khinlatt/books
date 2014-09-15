@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
 
   # FIXME: these should probably be has_many :through =>
   #   / allow for doing JOINs
+  has_many :reviews
+  has_many :books, through: :reviews
+
   def friends
     target_ids = Friend.where(source_id: id).pluck :target_id
     User.find target_ids
